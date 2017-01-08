@@ -1,6 +1,9 @@
-# ovh-vps
-This repository lists everything needed to setup a OVH VPS for a node web app.
+# install-server
 
-This tutorial may also be used for any other linux dedicated server.
+Tutorial to setup servers considering that OS is already installed (which is often the case for VPS, dedicated server, etc).
 
-* [unix.md](unix.md)
+The setup is about installing dependencies for node.js apps and security improvements.
+
+* [Unix setup](doc/unix.md)
+* [MySQL setup](doc/mysql.md)
+* [Node setup](doc/node.md)
