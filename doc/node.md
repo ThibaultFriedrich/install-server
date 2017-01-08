@@ -21,7 +21,7 @@ apt-get install build-essential
 
 ```
 
-## Manage web apps
+## Manage web apps with pm2
 
 ```bash
 
