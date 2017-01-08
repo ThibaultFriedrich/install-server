@@ -26,6 +26,12 @@ app.use(function (req, res, next) {
             return;
         }
     }
+
+    next();
+});
+
+app.get('/', function (req, res, next) {
+    res.send('Hello World');
 });
 
 server.on('upgrade', function (req, socket, head) {
