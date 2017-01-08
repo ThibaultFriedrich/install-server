@@ -26,31 +26,19 @@ app.use(function (req, res, next) {
             return;
         }
     }
-
-
-
 });
 
-
-/*
 server.on('upgrade', function (req, socket, head) {
-    // on récupère le nom de l'app grâce à req.url, qui est de la forme : /<appName>/socket.io/?EIO=3&transport=websocket&sid=<sid>
-    // on retire '/<appName>' de req.url, qui devient ainsi /socket.io/?EIO=3&transport=websocket&sid=<sid>
-    // on récupère le port correspondant à l'app en parcourant la liste des apps activées
-    // on redirige la web socket vers le port correspondant à l'app
-    var appName = req.url.split('/')[1];
-    req.url = req.url.replace('/' + appName, '');
 
-    var port = 0;
-    activatedApps.forEach(function (app) {
-        if (app.baseurl == '/' + appName) {
-            port = app.port;
+    for (var domain in config) {
+        if (req.headers.host == domain) {
+            var target = 'ws://127.0.0.1:' + config[domain].port;
+            req._target = target;
+            proxy.ws(req, socket, head, {target: target, xfwd: true}, function (err) {
+                console.log(err);
+            });
+
             return;
         }
-    });
-
-    var target = 'ws://127.0.0.1:' + port;
-    proxy.ws(req, socket, head, {target: target, xfwd: true}, function (err) {
-        console.log(err);
-    });
-});*/
+    }
+});
