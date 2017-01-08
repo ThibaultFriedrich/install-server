@@ -38,6 +38,7 @@ usermod -a -G webadmin thibault
 # check rights
 ls /var/apps
 
+
 # auto update
 
 # proxy to avoid port
