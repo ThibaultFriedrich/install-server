@@ -10,7 +10,6 @@ const exec = require('child_process').exec;
 
 require('dotenv').config();
 
-const hmac = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET);
 
 const config = require('./config.json');
 
@@ -46,6 +45,7 @@ app.post('/webhook/:repository', function (req, res, next) {
         var event = req.headers['x-github-event'];
         var signature = req.headers['x-hub-signature'];
         var branch = req.body.ref.split('/')[2];
+        var hmac = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET);
 
         hmac.update(JSON.stringify(req.body));
 
