@@ -37,9 +37,10 @@ app.use(function (req, res, next) {
 app.post('/webhook/:repository', function (req, res, next) {
     if (req.headers.host == process.env.WEBHOOK_DOMAIN) {
         console.log('repository: ', req.params.repository);
+        console.log('headers', req.headers);
         console.log('event', req.headers['X-GitHub-Event']);
         console.log('event', req.headers['X-Hub-Signature']);
-        console.log('branch', req.body.ref.split(2));
+        console.log('branch', req.body.ref.split('/')[2]);
 
         // console.log(req.body);
         res.sendStatus(200);
