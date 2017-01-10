@@ -69,7 +69,7 @@ app.post('/webhook/:repository', function (req, res, next) {
                 if (branch == 'production') {
                     console.log('redeployment');
                     var repositoryPath = path.join(__dirname, '../../'+repository);
-                    exec('./scripts/deploy '+repositoryPath, function(error, stdout, stderr) {
+                    exec('./scripts/deploy '+repositoryPath+' '+repository, function(error, stdout, stderr) {
                             console.log(stdout);
                             if(error != null) {
                                     console.log('Error during the execution of redeploy: ' + stderr);

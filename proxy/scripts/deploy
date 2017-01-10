@@ -5,4 +5,4 @@ cd $1
 git checkout production
 git pull
 npm install # optional
-pm2 restart service
+pm2 restart $2
