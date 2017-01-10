@@ -7,7 +7,7 @@ const crypto = require('crypto');
 
 require('dotenv').config();
 
-const hmac = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET);
+const hmac = crypto.createHmac('sha256', process.env.WEBHOOK_SECRET);
 
 const config = require('./config.json');
 
@@ -53,6 +53,11 @@ app.post('/webhook/:repository', function (req, res, next) {
             return;
         }
 
+        if (repository == 'install-server') {
+            res.sendStatus(200);
+            return;
+        }
+
         for (var domain in config) {
             if (repository == config[domain].app) {
 
@@ -69,6 +74,7 @@ app.post('/webhook/:repository', function (req, res, next) {
         // console.log('branch', req.body.ref.split('/')[2]);
 
         // console.log(req.body);
+
         res.status(404).send('repository not found');
 
 
