@@ -35,7 +35,6 @@ app.use(function (req, res, next) {
 });
 
 app.post('/webhook/:repository', function (req, res, next) {
-
     ///if (req.headers.host == process.env.WEBHOOK_DOMAIN) {
 
         console.log('repository: ', req.params.repository);
