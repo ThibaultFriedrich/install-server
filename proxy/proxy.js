@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({ws: true});
+const bodyParser = require('body-parser');
+
 
 require('dotenv').config();
 
@@ -13,6 +15,9 @@ var server = app.listen(process.env.PORT, '0.0.0.0', function () { //start web s
     console.log(err);
 });
 
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(function (req, res, next) {
 
     for (var domain in config) {
@@ -26,8 +31,19 @@ app.use(function (req, res, next) {
             return;
         }
     }
-
     next();
+});
+
+app.post('/webhook/:repository', function (req, res, next) {
+
+    if (req.headers.host == process.env.WEBHOOK_DOMAIN) {
+
+        console.log('repository: ', req.params.repository);
+        console.log(req.body.read);
+
+    } else {
+        next();
+    }
 });
 
 app.get('/', function (req, res, next) {
@@ -48,3 +64,18 @@ server.on('upgrade', function (req, socket, head) {
         }
     }
 });
+//
+// handler.on('push', function (event) {
+//         var comps = event.payload.ref.split('/');
+//         if(comps[2] != 'production') {
+//               console.log('Received a push on %s and no build has is triggered', comps[2]);
+//               return;
+//         }
+//         console.log('Received a push on production, build started...');
+//         exec('./scripts/deploy', function(error, stdout, stderr) {
+//                 console.log(stdout);
+//                 if(error != null) {
+//                         console.log('Error during the execution of redeploy: ' + stderr);
+//                 }
+//         });
+// });
