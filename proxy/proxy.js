@@ -4,6 +4,8 @@ const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({ws: true});
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
+const path = require('path');
+const fs = require('fs');
 
 require('dotenv').config();
 
@@ -45,8 +47,11 @@ app.post('/webhook/:repository', function (req, res, next) {
         var branch = req.body.ref.split('/')[2];
 
         hmac.update(JSON.stringify(req.body));
-        console.log('signature 1', hmac.digest('hex'));
-        console.log('signature 2', signature);
+
+        if ('sha1='+hmac.digest('hex') != signature) {
+            res.status(404).send('bad signature');
+            return;
+        }
 
         if (event != 'push') {
             res.status(404).send('bad event');
@@ -60,7 +65,15 @@ app.post('/webhook/:repository', function (req, res, next) {
 
         for (var domain in config) {
             if (repository == config[domain].app) {
-
+                if (branch == 'production') {
+                    var repositoryPath = path.join(__dirname, '../../'+repository);
+                    exec('./scripts/deploy '+repositoryPath, function(error, stdout, stderr) {
+                            console.log(stdout);
+                            if(error != null) {
+                                    console.log('Error during the execution of redeploy: ' + stderr);
+                            }
+                    });
+                }
 
                 res.sendStatus(200);
                 return;
