@@ -3,7 +3,8 @@ const app = express();
 const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({ws: true});
 const bodyParser = require('body-parser');
-
+const crypto = require('crypto');
+const hmac = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET);
 
 require('dotenv').config();
 
@@ -36,14 +37,39 @@ app.use(function (req, res, next) {
 
 app.post('/webhook/:repository', function (req, res, next) {
     if (req.headers.host == process.env.WEBHOOK_DOMAIN) {
-        console.log('repository: ', req.params.repository);
-        console.log('headers', req.headers);
-        console.log('event', req.headers['X-GitHub-Event']);
-        console.log('event', req.headers['X-Hub-Signature']);
-        console.log('branch', req.body.ref.split('/')[2]);
+
+        var repository = req.params.repository;
+        var event = req.headers['x-github-event'];
+        var signature = req.headers['x-hub-signature'];
+        var branch = req.body.ref.split('/')[2];
+
+        hmac.update('some data to hash');
+        console.log('signature 1', hmac.digest('hex'));
+        console.log('signature 2', signature);
+
+        if (event != 'push') {
+            res.status(404).send('bad event');
+            return;
+        }
+
+        for (var domain in config) {
+            if (repository == config[domain].app) {
+                
+
+                res.sendStatus(200);
+                return;
+            }
+        }
+
+        // console.log('repository: ', req.params.repository);
+        // console.log('headers', req.headers);
+        // console.log('event', req.headers['x-github-event']);
+        // console.log('event', req.headers['x-hub-signature']);
+        // console.log('branch', req.body.ref.split('/')[2]);
 
         // console.log(req.body);
-        res.sendStatus(200);
+        res.status(404).send('repository not found');
+
 
     } else {
         next();
