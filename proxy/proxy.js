@@ -4,9 +4,10 @@ const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({ws: true});
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
-const hmac = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET);
 
 require('dotenv').config();
+
+const hmac = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET);
 
 const config = require('./config.json');
 
@@ -54,7 +55,7 @@ app.post('/webhook/:repository', function (req, res, next) {
 
         for (var domain in config) {
             if (repository == config[domain].app) {
-                
+
 
                 res.sendStatus(200);
                 return;
