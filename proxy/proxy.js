@@ -35,13 +35,14 @@ app.use(function (req, res, next) {
 });
 
 app.post('/webhook/:repository', function (req, res, next) {
-    if (req.headers.host == process.env.WEBHOOK_DOMAIN) {
+        if (req.headers.host == process.env.WEBHOOK_DOMAIN) {
 
         console.log('repository: ', req.params.repository);
         console.log('event', req.body['X-GitHub-Event']);
         console.log(req.body.read);
 
-        res.send(200);
+        console.log(req.body);
+        res.sendStatus(200);
 
     } else {
         next();
