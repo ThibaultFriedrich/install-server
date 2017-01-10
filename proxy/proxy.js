@@ -7,7 +7,7 @@ const crypto = require('crypto');
 
 require('dotenv').config();
 
-const hmac = crypto.createHmac('sha256', process.env.WEBHOOK_SECRET);
+const hmac = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET);
 
 const config = require('./config.json');
 
@@ -44,7 +44,7 @@ app.post('/webhook/:repository', function (req, res, next) {
         var signature = req.headers['x-hub-signature'];
         var branch = req.body.ref.split('/')[2];
 
-        hmac.update('some data to hash');
+        hmac.update(JSON.stringify(req.body));
         console.log('signature 1', hmac.digest('hex'));
         console.log('signature 2', signature);
 
