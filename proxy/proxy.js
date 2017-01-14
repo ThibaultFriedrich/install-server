@@ -65,20 +65,23 @@ app.post('/webhook/:repository', function (req, res, next) {
         }
 
         for (var domain in config) {
-            if (repository == config[domain].app) {
-                if (branch == 'production') {
-                    console.log('redeployment');
-                    var repositoryPath = path.join(__dirname, '../../'+repository);
-                    exec('./scripts/deploy '+repositoryPath+' '+repository, function(error, stdout, stderr) {
-                            console.log(stdout);
-                            if(error != null) {
-                                    console.log('Error during the execution of redeploy: ' + stderr);
-                            }
-                    });
-                }
 
-                res.sendStatus(200);
-                return;
+            for (var repositoryPath in config[domain].repositories) {
+                if (repository == path.dirname(repositoryPath)) {
+                    if (branch == 'production') {
+                        console.log('redeployment');
+                        var repositoryPath = path.join(__dirname, '../../'+repositoryPath);
+                        exec('./scripts/deploy '+repositoryPath+' '+config[domain].app, function(error, stdout, stderr) {
+                                console.log(stdout);
+                                if(error != null) {
+                                        console.log('Error during the execution of redeploy: ' + stderr);
+                                }
+                        });
+                    }
+
+                    res.sendStatus(200);
+                    return;
+                }
             }
         }
 
