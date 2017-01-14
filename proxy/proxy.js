@@ -67,8 +67,10 @@ app.post('/webhook/:repository', function (req, res, next) {
         for (var domain in config) {
 
             for (var repositoryPath in config[domain].repositories) {
-                console.log('path ', path.basename(repositoryPath));
-                if (repository == path.basename(repositoryPath)) {
+                var split = repositoryPath.split('/');
+                var repo = split[split.length - 1];
+                console.log('path ', repo);
+                if (repository == repo) {
                     if (branch == 'production') {
                         console.log('redeployment');
                         var repositoryPath = path.join(__dirname, '../../'+repositoryPath);
