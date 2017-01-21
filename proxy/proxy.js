@@ -44,6 +44,12 @@ app.post('/webhook/:repository', function (req, res, next) {
         var repository = req.params.repository;
         var event = req.headers['x-github-event'];
         var signature = req.headers['x-hub-signature'];
+
+        if (!req.body.ref) {
+            res.sendStatus(200);
+            return;
+        }
+
         var branch = req.body.ref.split('/')[2];
         var hmac = crypto.createHmac('sha1', process.env.WEBHOOK_SECRET);
 
