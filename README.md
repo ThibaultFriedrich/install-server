@@ -7,5 +7,7 @@ The setup is about installing dependencies for node.js apps and security improve
 * [Unix setup](doc/unix.md)
 * [MySQL setup](doc/mysql.md)
 * [Node setup](doc/node.md)
+* [Nginx setup](doc/nginx.md)
+* [Https setup](doc/https.md)
 
-It also contains a proxy to manage several domains. 
+It also contains a proxy to manage several domains.
