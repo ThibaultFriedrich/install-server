@@ -1,24 +1,40 @@
 # Unix setup
 
-For more security, you must customize the unix config.
+## Ssh connection
 
 On the local machine:
 
 ```bash
-ssh root@vpsxxx.ovh.net # in theory you received the password by email
+$ ssh root@vpsxxx.ovh.net # in theory you received the password by email
 ```
 
-Then on the server:
 
-``` bash
+## Change the name of the host
 
+```bash
+$ hostname <new host name>
+$ vim /etc/hostname
+$ vim /etc/hosts
+$ reboot
+```
+
+## Update the OS
+
+```bash
 # to be sure to have the last updates
-apt-get update    
-apt-get upgrade
+$ apt-get update    
+$ apt-get upgrade
 
-# create a new user to avoid be logged as root
-adduser <username> # use a randomly generated password
 ```
+
+## Add new user to login with root
+
+
+```bash
+# create a new user to avoid be logged as root
+$ adduser <username> # use a randomly generated password
+```
+
 
 On the local machine:
 ```bash
@@ -30,6 +46,9 @@ ssh-copy-id -i <path to key>.pub <username>@vpsxxx.ovh.net
 ssh <username>@vpsxxx.ovh.net
 
 ```
+
+## Limit ssh connections
+
 
 On the server
 ```bash
@@ -64,9 +83,6 @@ vi /etc/default/rkhunter
 # change line CRON_DAILY_RUN="" to CRON_DAILY_RUN="true"
 
 ```
-
-
-
 
 
 Thanks to :
