@@ -13,3 +13,4 @@
 
 - https://docs.traefik.io/
 - https://blog.wecoprod.com/traefik-docker/
+- https://www.bardina.net/traefik-gitlab-docker/

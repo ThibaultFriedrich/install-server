@@ -11,6 +11,7 @@ The setup is about installing dependencies for http, node.js apps and security i
 - [Node setup](doc/node.md)
 - [Reverse proxy setup](doc/reverse-proxy.md)
 - [Https setup](doc/https.md)
+- [Docker setup](doc/docker.md)
 
 ## Docker & Cie
 
